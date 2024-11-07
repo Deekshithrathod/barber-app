@@ -65,7 +65,7 @@ export default function BarberCalendar() {
 
 	return (
 		<Card className="w-full max-w-3xl mx-auto">
-			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+			<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-10">
 				<CardTitle className="text-2xl font-bold">Barber Dashboard</CardTitle>
 				<div className="flex items-center space-x-2">
 					<Button variant="outline" size="icon" onClick={handleShare}>
