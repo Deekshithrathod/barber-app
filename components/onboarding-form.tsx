@@ -24,8 +24,6 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import Link from "next/link";
-import { Card } from "./ui/card";
 
 const formSchema = z.object({
 	shopName: z.string().min(2, {
@@ -130,17 +128,6 @@ export default function OnboardingForm() {
 
 	return (
 		<>
-			<div className="flex">
-				<Card className="w-full p-10">
-					<h1 className="text-2xl font-bold m-10">Navigate to other pages</h1>
-					<div className="flex gap-2">
-						<Button>
-							<Link href="/dashboard">Dashboard</Link>
-						</Button>
-						<Link href="/booking-form">Bookings</Link>
-					</div>
-				</Card>
-			</div>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 					<FormField
