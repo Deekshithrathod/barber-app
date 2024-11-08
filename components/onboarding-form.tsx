@@ -24,6 +24,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import createShop from "@/lib/action";
 
 const formSchema = z.object({
 	shopName: z.string().min(2, {
@@ -118,8 +119,9 @@ export default function OnboardingForm() {
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
+	async function onSubmit(values: z.infer<typeof formSchema>) {
 		console.log(values);
+		await createShop(values);
 		toast({
 			title: "Onboarding Submitted",
 			description: "Your shop information has been successfully submitted.",
@@ -129,7 +131,11 @@ export default function OnboardingForm() {
 	return (
 		<>
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className="space-y-8"
+					// action={createShop}
+				>
 					<FormField
 						control={form.control}
 						name="shopName"
