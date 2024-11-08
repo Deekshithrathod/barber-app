@@ -32,6 +32,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { bookSlotAtShop } from "@/lib/action";
 
 const formSchema = z.object({
 	name: z.string().min(2, {
@@ -92,8 +93,10 @@ export default function BookingForm() {
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
+	async function onSubmit(values: z.infer<typeof formSchema>) {
 		console.log(values);
+		await bookSlotAtShop(values);
+
 		toast({
 			title: "Booking Submitted",
 			description: `Your appointment is scheduled for ${format(

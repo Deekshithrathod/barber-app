@@ -46,11 +46,26 @@ const formSchema = z.object({
 	description: z.string().optional(),
 });
 
-const createShop = async (values: z.infer<typeof formSchema>) => {
-	// console.log(data);
-	console.log(values);
-	// save this values object to DB using mongoose
+const bookingFormSchema = z.object({
+	name: z.string().min(2, {
+		message: "Name must be at least 2 characters.",
+	}),
+	email: z.string().email({
+		message: "Please enter a valid email address.",
+	}),
+	date: z.date({
+		required_error: "Please select a date.",
+	}),
+	time: z.string({
+		required_error: "Please select a time slot.",
+	}),
+	service: z.string({
+		required_error: "Please select a service.",
+	}),
+});
 
+const createShop = async (values: z.infer<typeof formSchema>) => {
+	console.log(values);
 	try {
 		await mongoose.connect(process.env.MONGODB_URI as string);
 		const Shopn = mongoose.model("Shop", Shop.schema);
@@ -59,23 +74,28 @@ const createShop = async (values: z.infer<typeof formSchema>) => {
 	} catch (error) {
 		console.log(error);
 	}
-
-	console.log(`receirved`);
 };
 
 // create a function to book a slot at a shop with _id
-const bookSlotAtShop = async () => {
-	// console.log(data);
-	// save this values object to DB using mongoose
+const bookSlotAtShop = async (values: z.infer<typeof bookingFormSchema>) => {
+	console.log(values);
 
-	try {
-		await mongoose.connect(process.env.MONGODB_URI as string);
-		// const Shopn = mongoose.model("Shop", Shop.schema);
-		// const newShop = new Shopn(values);
-		// await newShop.save();
-	} catch (error) {
-		console.log(error);
+	const user = await mongoose.model("User").findOne({ email: values.email });
+
+	if (!user) {
+		throw new Error("User does not exist");
 	}
+
+	const booking = new (mongoose.model("Booking"))({
+		userId: user._id,
+		slotTime: new Date(values.date + "T" + values.time),
+		status: "booked",
+	});
+
+	await booking.save();
+
+	return { message: "Booking successful", bookingId: booking._id };
 };
 
+export { bookSlotAtShop };
 export default createShop;

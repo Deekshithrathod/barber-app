@@ -78,6 +78,7 @@ export default function BarberCalendar() {
 					</Button>
 				</div>
 			</CardHeader>
+
 			<CardContent>
 				<ScrollArea className="h-[calc(100vh-200px)] pr-4">
 					{mockBookings.map((booking, index) => (
